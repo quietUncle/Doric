@@ -1,3 +1,4 @@
+import 'package:doric/doric/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:doric/doric/doric_context.dart';
 import 'package:doric/doric/doric_promise.dart';
@@ -7,10 +8,12 @@ import 'package:doric/doric/layout/doric_widget.dart';
 import 'package:doric/doric/shader/view_node.dart';
 import 'package:doric/flutter_jscore.dart';
 
-class PopoverPlugin extends DoricPlugin {
+class PopoverPlugin extends DoricPlugin implements OrientationListener {
   Map<String, OverlayEntry> overlays = {};
 
-  PopoverPlugin(DoricContext context) : super(context);
+  PopoverPlugin(DoricContext context) : super(context){
+     DoricUtils.addOrientationListener(this);
+  }
   String TYPE = "popOver";
 
   @override
@@ -78,6 +81,12 @@ class PopoverPlugin extends DoricPlugin {
 
   @override
   void onTearDown() {
+    DoricUtils.removeOrientationListener(this);
+    dismissAll();
+  }
+
+  @override
+  void onOrientationChange(Orientation oldOrientation, Orientation newOrientation) {
     dismissAll();
   }
 }

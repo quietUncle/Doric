@@ -7,7 +7,6 @@ import 'package:doric/doric/layout/doric_widget.dart';
 import 'package:doric/doric/shader/super_node.dart';
 import 'package:doric/doric/shader/view_node.dart';
 import 'package:doric/doric/utils/js_dispatcher.dart';
-import 'package:doric/doric/utils/log.dart';
 import 'package:doric/jscore/js_value.dart';
 
 class ScrollerNode extends SuperNode<ScrollWidget> {
