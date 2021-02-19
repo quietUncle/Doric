@@ -8,6 +8,7 @@ import 'package:doric/doric/loader/doric_JSLoaderManager.dart';
 import 'package:doric/doric/plugin/navigator_plugin.dart';
 
 import 'shader/doric_root.dart';
+import 'utils/util.dart';
 
 class DoricPanel extends StatefulWidget {
   Map data;
@@ -24,6 +25,7 @@ class _DoricPanelState extends State<DoricPanel> {
   DoricRootWidget rootWidget;
   bool init = false;
   Orientation _orientation;
+  var size = Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
 
   @override
   void initState() {
@@ -49,10 +51,17 @@ class _DoricPanelState extends State<DoricPanel> {
     if (init) {
       return OrientationBuilder(builder: (context, orientation) {
         if (_orientation == null) {
+          DoricUtils.initOrientation(orientation);
           _orientation = orientation;
         } else if (_orientation != orientation) {
-          _orientation = orientation;
-          rootWidget.onConfigChange();
+          if (DoricUtils.getScreenWidth() != size.width ||
+              DoricUtils.getScreenHeight() != size.height) {
+            DoricUtils.onOrientationChange(orientation);
+            _orientation = orientation;
+            size =
+                Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
+            rootWidget.onSizeChange();
+          }
         }
         return rootWidget;
       });

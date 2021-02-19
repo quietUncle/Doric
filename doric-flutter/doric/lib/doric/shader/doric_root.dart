@@ -32,7 +32,6 @@ class RootNode extends StackNode<DoricRootWidget> {
 class DoricRootWidget extends DoricWidget with WidgetsBindingObserver {
   DoricContext _doricContext;
   bool first = true;
-  var size = Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
 
   DoricRootWidget() : super(null, {}) {
     WidgetsBinding.instance.addObserver(this);
@@ -44,13 +43,9 @@ class DoricRootWidget extends DoricWidget with WidgetsBindingObserver {
     _doricContext.getRoot().setRootWidget(this);
   }
 
-  onConfigChange() {
-    if (DoricUtils.getScreenWidth() != size.width ||
-        DoricUtils.getScreenHeight() != size.height) {
-      size = Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
-      _doricContext.build(
-          DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
-    }
+  onSizeChange() {
+    _doricContext.build(
+        DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
   }
 
   @override

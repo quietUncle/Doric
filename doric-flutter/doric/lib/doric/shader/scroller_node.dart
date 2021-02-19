@@ -1,3 +1,4 @@
+import 'package:doric/doric/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:doric/doric/doric_context.dart';
 import 'package:doric/doric/doric_promise.dart';
@@ -12,8 +13,7 @@ import 'package:doric/jscore/js_value.dart';
 class ScrollerNode extends SuperNode<ScrollWidget> {
   ViewNode mChildNode;
 
-  ScrollerNode(DoricContext context) : super(context) {
-  }
+  ScrollerNode(DoricContext context) : super(context) {}
 
   @override
   void beforeBlend(Map props) {
@@ -51,8 +51,6 @@ class ScrollerNode extends SuperNode<ScrollWidget> {
   ViewNode<Widget> getSubNodeById(String id) {
     return mChildNode?.getId() == id ? mChildNode : null;
   }
-
-
 }
 
 class ScrollWidget extends DoricStateWidget {
@@ -64,11 +62,11 @@ class ScrollWidget extends DoricStateWidget {
   }
 }
 
-class ScrollState extends DoricState<ScrollerNode, ScrollWidget> {
+class ScrollState extends DoricState<ScrollerNode, ScrollWidget>
+    implements OrientationListener {
   Offset lastScroll = Offset(0, 0);
   Offset lastScrollEnd = Offset(0, 0);
   DoricJSPatcher doricJSPatcher = new DoricJSPatcher();
-
   TransformationController _transformationController =
       TransformationController();
 
@@ -78,15 +76,28 @@ class ScrollState extends DoricState<ScrollerNode, ScrollWidget> {
     var data = _transformationController.value.absolute().getTranslation();
     return Offset(data[0].toDouble(), data[1].toDouble());
   }
+
   @override
   void initState() {
     super.initState();
     getViewNode().registerFunc("scrollBy", scrollBy);
+    DoricUtils.addOrientationListener(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    DoricUtils.removeOrientationListener(this);
+  }
+
+  @override
+  void onOrientationChange(Orientation oldOrientation, Orientation newOrientation) {
+    _transformationController = new TransformationController();
   }
 
   void scrollBy(JSValue jsValue, DoricPromise promise) async {
     var data = jsValue.toObject().toMap();
-    var point=Offset(data["offset"]["x"], data["offset"]["y"]);
+    var point = Offset(data["offset"]["x"], data["offset"]["y"]);
     print("scrollBy");
     print(data);
     print(data["offset"]);
