@@ -43,7 +43,7 @@ abstract class GroupNode<T extends Widget> extends SuperNode<T> {
 
   @override
   bool shouldUpdate() {
-    return super.shouldUpdate()|childChanged;
+    return super.shouldUpdate()||childChanged;
   }
 
   void configChildNode() {
