@@ -8,12 +8,13 @@ import 'package:doric/doric/layout/doric_widget.dart';
 import 'package:doric/doric/shader/view_node.dart';
 import 'package:doric/flutter_jscore.dart';
 
-class PopoverPlugin extends DoricPlugin implements OrientationListener {
+class PopoverPlugin extends DoricPlugin implements DoricFrameListener {
   Map<String, OverlayEntry> overlays = {};
 
-  PopoverPlugin(DoricContext context) : super(context){
-     DoricUtils.addOrientationListener(this);
+  PopoverPlugin(DoricContext context) : super(context) {
+    DoricUtils.addDoricFrameListener(this);
   }
+
   String TYPE = "popOver";
 
   @override
@@ -25,7 +26,6 @@ class PopoverPlugin extends DoricPlugin implements OrientationListener {
   }
 
   void show(JSValue jsValue, DoricPromise promise) {
-    print(jsValue.toObject().toMap());
     var data = jsValue.toObject().toMap();
     var id = data["id"];
     var type = data["type"];
@@ -69,9 +69,9 @@ class PopoverPlugin extends DoricPlugin implements OrientationListener {
               bottom: 0,
               child: DoricStack(
                 data: DoricNodeData({
-                  "layoutConfig":{
-                    "widthSpec": DoricLayoutSpec.DoricLayoutMost.index*1.0,
-                    "heightSpec": DoricLayoutSpec.DoricLayoutMost.index*1.0,
+                  "layoutConfig": {
+                    "widthSpec": DoricLayoutSpec.DoricLayoutMost.index * 1.0,
+                    "heightSpec": DoricLayoutSpec.DoricLayoutMost.index * 1.0,
                   }
                 }),
                 children: <Widget>[viewNode.getNodeView()],
@@ -81,12 +81,12 @@ class PopoverPlugin extends DoricPlugin implements OrientationListener {
 
   @override
   void onTearDown() {
-    DoricUtils.removeOrientationListener(this);
+    DoricUtils.removeDoricFrameListener(this);
     dismissAll();
   }
 
   @override
-  void onOrientationChange(Orientation oldOrientation, Orientation newOrientation) {
+  void onSizeChange(Size oldSize, Size newSize) {
     dismissAll();
   }
 }

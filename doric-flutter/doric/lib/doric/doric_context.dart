@@ -137,8 +137,6 @@ class DoricContext {
     Timer.run(() {
       init(extra);
       callEntity(DoricConstant.DORIC_ENTITY_CREATE, []);
-      build(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
-      onShow();
     });
   }
 
@@ -147,7 +145,7 @@ class DoricContext {
   }
 
   void build(double width, double height) {
-    print(width.toString()+"   "+height.toString());
+    print("width = "+width.toString()+"  height="+height.toString());
     callEntity(DoricConstant.DORIC_ENTITY_BUILD, [
       JSValue.makeFromObject(
           getJSContext(),

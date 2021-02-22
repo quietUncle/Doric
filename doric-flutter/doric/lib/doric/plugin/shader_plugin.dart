@@ -21,9 +21,10 @@ class ShaderPlugin extends DoricPlugin {
   JSValue render(JSValue jsValue, DoricPromise promise) {
     var data = jsValue.toObject().toMap();
     var viewId = data["id"];
-    // DoricLog.i(data);
     var rootNode = getDoricContext().getRoot();
     if ("Root" == data["type"]) {
+      data["props"]["height"] = DoricUtils.getScreenHeight();
+      data["props"]["width"] = DoricUtils.getScreenWidth();
       rootNode.setId(viewId);
       rootNode.blend(data["props"]);
     } else {

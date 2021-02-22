@@ -1,16 +1,10 @@
-import 'dart:ffi';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:doric/doric/doric_panel.dart';
-
 import 'doric/engine/doric_native_driver.dart';
-
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,15 +20,12 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: ' Flutter Demo'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -53,14 +44,7 @@ class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-class Test{
-  b(){
-    Row();
-    Draggable(
 
-    );
-  }
-}
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
@@ -99,35 +83,35 @@ class _MyHomePageState extends State<MyHomePage> {
       "TextAnimationDemo",
     ];
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Doric Flutter Demo"),
-      ),
-      body: Container(
-        child: ListView(
-          children: demos
-              .map((e) => ListTile(
-                    title: Text(e),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Scaffold(
-                              appBar: AppBar(
-                                title: Text(e),
-                              ),
-                              body: Container(
-                                  color: Colors.white,
-                                  child: DoricPanel({
-                                    "source": 'assets://demo/' + e + '.js',
-                                    "config": {"alias": e}
-                                  })),
-                            ),
-                          ));
-                    },
-                  ))
-              .toList(),
+        appBar: AppBar(
+          title: Text("Doric  Demo"),
         ),
-      )
+        body: Container(
+          child: ListView(
+            children: demos
+                .map((e) => ListTile(
+              title: Text(e),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Scaffold(
+                        appBar: AppBar(
+                          title: Text(e),
+                        ),
+                        body: Container(
+                            color: Colors.white,
+                            child: DoricPanel({
+                              "source": 'assets://demo/' + e + '.js',
+                              "config": {"alias": e}
+                            })),
+                      ),
+                    ));
+              },
+            ))
+                .toList(),
+          ),
+        )
     );
   }
 }

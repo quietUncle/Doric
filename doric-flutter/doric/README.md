@@ -1,6 +1,6 @@
 # doric
 
-doric-flutter
+A new Flutter project.
 
 ## Getting Started
 

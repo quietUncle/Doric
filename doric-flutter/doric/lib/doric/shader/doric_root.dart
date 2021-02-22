@@ -43,9 +43,13 @@ class DoricRootWidget extends DoricWidget with WidgetsBindingObserver {
     _doricContext.getRoot().setRootWidget(this);
   }
 
-  onSizeChange() {
+  onShow(){
+    _doricContext?.onShow();
+  }
+
+  onBuild(double width,double height){
     _doricContext.build(
-        DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
+        width,height);
   }
 
   @override

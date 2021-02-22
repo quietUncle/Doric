@@ -7,28 +7,28 @@ import 'package:doric/doric/utils/log.dart';
 import 'package:doric/flutter_jscore.dart';
 
 class DoricUtils {
-  static Orientation _orientation;
+  static Size _frameSize;
 
-  static List<OrientationListener> _orientationListeners = [];
+  static List<DoricFrameListener> _orientationListeners = [];
 
-  static void addOrientationListener(OrientationListener listener) {
+  static void addDoricFrameListener(DoricFrameListener listener) {
     _orientationListeners.add(listener);
   }
 
-  static void removeOrientationListener(OrientationListener listener) {
+  static void removeDoricFrameListener(DoricFrameListener listener) {
     _orientationListeners.remove(listener);
   }
 
-  static void initOrientation(Orientation newOrientation) {
-    _orientation = newOrientation;
+  static void initDoricFrame(Size newSize) {
+    _frameSize = newSize;
   }
 
-  static void onOrientationChange(Orientation newOrientation) {
-    if (newOrientation != _orientation) {
+  static void onDoricFrameChange(Size newSize) {
+    if (newSize.width!=_frameSize.width||newSize.height!=_frameSize.height) {
       _orientationListeners.forEach((listener) {
-        listener.onOrientationChange(_orientation, newOrientation);
+        listener.onSizeChange(_frameSize, newSize);
       });
-      _orientation = newOrientation;
+      _frameSize = newSize;
     }
   }
 
@@ -100,8 +100,8 @@ class DoricUtils {
   }
 }
 
-abstract class OrientationListener {
-  void onOrientationChange(Orientation oldOrientation, Orientation newOrientation);
+abstract class DoricFrameListener {
+  void onSizeChange(Size oldSize, Size newSize);
 }
 
 class DeviceUtils {}

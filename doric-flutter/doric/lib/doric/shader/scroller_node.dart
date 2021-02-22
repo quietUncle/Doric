@@ -62,7 +62,7 @@ class ScrollWidget extends DoricStateWidget {
 }
 
 class ScrollState extends DoricState<ScrollerNode, ScrollWidget>
-    implements OrientationListener {
+    implements DoricFrameListener {
   Offset lastScroll = Offset(0, 0);
   Offset lastScrollEnd = Offset(0, 0);
   DoricJSPatcher doricJSPatcher = new DoricJSPatcher();
@@ -80,17 +80,17 @@ class ScrollState extends DoricState<ScrollerNode, ScrollWidget>
   void initState() {
     super.initState();
     getViewNode().registerFunc("scrollBy", scrollBy);
-    DoricUtils.addOrientationListener(this);
+    DoricUtils.addDoricFrameListener(this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    DoricUtils.removeOrientationListener(this);
+    DoricUtils.removeDoricFrameListener(this);
   }
 
   @override
-  void onOrientationChange(Orientation oldOrientation, Orientation newOrientation) {
+  void onSizeChange(Size oldSize, Size newSize) {
     _transformationController = new TransformationController();
   }
 

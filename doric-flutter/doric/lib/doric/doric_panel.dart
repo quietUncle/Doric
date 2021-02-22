@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,7 @@ class _DoricPanelState extends State<DoricPanel> {
   DoricRootWidget rootWidget;
   bool init = false;
   Orientation _orientation;
-  var size = Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
+  BoxConstraints size = null;
 
   @override
   void initState() {
@@ -49,20 +50,22 @@ class _DoricPanelState extends State<DoricPanel> {
   Widget build(BuildContext context) {
     rootWidget.setContext(context);
     if (init) {
-      return OrientationBuilder(builder: (context, orientation) {
-        if (_orientation == null) {
-          DoricUtils.initOrientation(orientation);
-          _orientation = orientation;
-        } else if (_orientation != orientation) {
-          if (DoricUtils.getScreenWidth() != size.width ||
-              DoricUtils.getScreenHeight() != size.height) {
-            DoricUtils.onOrientationChange(orientation);
-            _orientation = orientation;
-            size =
-                Size(DoricUtils.getScreenWidth(), DoricUtils.getScreenHeight());
-            rootWidget.onSizeChange();
+      return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        if (size != null) {
+          if (size.maxHeight == constraints.maxHeight ||
+              size.maxWidth != constraints.maxWidth) {
+            rootWidget.onBuild(constraints.maxWidth, constraints.maxHeight);
+            Timer.run(() {
+              DoricUtils.onDoricFrameChange(Size(constraints.maxWidth,constraints.maxHeight));
+            });
           }
+        } else {
+          DoricUtils.initDoricFrame(Size(constraints.maxWidth,constraints.maxHeight));
+          rootWidget.onBuild(constraints.maxWidth, constraints.maxHeight);
+          rootWidget.onShow();
         }
+        size = constraints;
         return rootWidget;
       });
     }
