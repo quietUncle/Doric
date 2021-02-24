@@ -6,6 +6,7 @@ import 'package:doric/doric/shader/view_node.dart';
 import 'package:doric/doric/utils/log.dart';
 import 'package:doric/doric/utils/util.dart';
 import 'package:doric/flutter_jscore.dart';
+import 'package:flutter/material.dart';
 
 class ShaderPlugin extends DoricPlugin {
   ShaderPlugin(DoricContext context) : super(context);
@@ -33,7 +34,10 @@ class ShaderPlugin extends DoricPlugin {
         targetNode.blend(data["props"]);
       }
     }
-    promise.resolve([]);
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+       print("==addPostFrameCallback===");
+       promise.resolve([]);
+    });
     return JSValue.makeBoolean(getDoricContext().getJSContext(), true);
   }
 
